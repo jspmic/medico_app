@@ -1,0 +1,25 @@
+{
+	"Bujumbura": [
+		"Ntahangwa", "Mukaza", "Rwibaga",
+		"Isare", "Mugere", "Muhuta", "Mpanda",
+		"Bubanza", "Bukinanyana", "Cibitoke", "Mugina"
+	],
+	"Burunga": [
+		"Rumonge", "Matana", "Bururi",
+		"Musongati", "Rutana", "Makamba", "Nyanza"
+	],
+	"Gitega": [
+		"Gishubi", "Mwaro", "Nyabihanga",
+		"Kiganda", "Muramvya", "Bugendana",
+		"Gitega", "Shombo", "Karusi"
+	],
+	"Buhumuza": [
+		"Cankuzo", "Gisagara", "Ruyigi",
+		"Gisuru", "Butangazwa", "Muyinga", "Butihinda"
+	],
+	"Butanyerera": [
+		"Matongo", "Kayanza", "Muhanga",
+		"Ngozi", "Tangara", "Kiremba",
+		"Kirundo", "Busoni"
+	]
+}

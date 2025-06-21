@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medico/customWidgets.dart';
+import 'package:medico/user.dart';
+import 'package:medico/rdvScreen.dart' as rdvScreen;
+import 'package:medico/myselfScreen.dart';
+import 'package:medico/anotherScreen.dart';
 
 // These will be defined later depending on the context we're in
 // background: will contain the startup background depending on the device's theme
@@ -11,11 +16,7 @@ bool changeTheme = false;
 Color? getDeviceTheme(BuildContext context){
   Brightness brightness = MediaQuery.of(context).platformBrightness;
   bool isDarkMode = brightness == Brightness.dark;
-  return isDarkMode ? Colors.grey[900] : Colors.white;
-}
-
-Color? getColor() {
-  return background == Colors.white ? Colors.black : Colors.white;
+  return isDarkMode ? Colors.blueGrey[900] : Colors.white;
 }
 
 void main() => runApp(const Login());
@@ -31,10 +32,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        initialRoute: '/',
-        // routes: {
-        //   '/second': (context) => const screen2.Screen2(),
-        // },
         title: "Medico",
         theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
@@ -100,6 +97,12 @@ class _LoginPageState extends State<LoginPage> {
     if (mounted) {
       username.text = "";
       pssw.text = "";
+      Navigator.push(context, 
+	  	MaterialPageRoute(builder: (context) {
+			rdvScreen.ScreenTransition(backgroundColor: background);
+			return rdvScreen.Rdv();
+		}),
+		);
     }
   }
 
@@ -139,11 +142,11 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
                               labelText: "Nom d'utilisateur...",
-                                labelStyle: TextStyle(color: getColor(), fontSize: 12),
-                              suffixIcon: Icon(Icons.person, color: getColor()),
+                                labelStyle: TextStyle(color: getColor(background), fontSize: 12),
+                              suffixIcon: Icon(Icons.person, color: getColor(background)),
                             ),
                             controller: username,
-                            style: TextStyle(color: getColor()),
+                            style: TextStyle(color: getColor(background)),
                             validator: (value) => _validateField(value),
                             onSaved: (value) => _uname = value!,
                           ),
@@ -156,12 +159,12 @@ class _LoginPageState extends State<LoginPage> {
 								setState(() {
 								  passwordVisible = !passwordVisible;
 								});
-								}, icon: Icon(passwordVisible ? Icons.visibility : Icons.visibility_off), color: getColor()),
-                              labelStyle: TextStyle(color: getColor(), fontSize: 12)
+								}, icon: Icon(passwordVisible ? Icons.visibility : Icons.visibility_off), color: getColor(background)),
+                              labelStyle: TextStyle(color: getColor(background), fontSize: 12)
                             ),
                             obscureText: !passwordVisible,
                             controller: pssw,
-                            style: TextStyle(color: getColor()),
+                            style: TextStyle(color: getColor(background)),
                             validator: (value) => _validateField(value),
                             onSaved: (value) => _pssw = value!,
                           )
@@ -171,15 +174,15 @@ class _LoginPageState extends State<LoginPage> {
                         isLoading ? CircularProgressIndicator()
                             : FloatingActionButton(onPressed: authenticate,
                           backgroundColor: Colors.red,
-                          child: Icon(Icons.login_rounded, color: getColor())),
+                          child: Icon(Icons.login_rounded, color: getColor(background))),
                         SizedBox(height: MediaQuery.of(context).size.height/13),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("Pas encore de compte ?", style: TextStyle(color: getColor())),
+                            Text("Pas encore de compte ?", style: TextStyle(color: getColor(background))),
                             ElevatedButton(onPressed: () => changeThemeFunction(),
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                              child: Text("Créer un compte", style: TextStyle(color: getColor()))),
+                              child: Text("Créer un compte", style: TextStyle(color: getColor(background)))),
                           ]
                         ),
                   ]))),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medico/user.dart';
+import 'package:medico/models/user.dart';
 import 'package:medico/customWidgets.dart';
 
 late Color? background;

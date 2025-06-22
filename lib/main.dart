@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medico/customWidgets.dart';
-import 'package:medico/user.dart';
+import 'package:medico/models/user.dart';
 import 'package:medico/rdvScreen.dart' as rdvScreen;
 import 'package:medico/myselfScreen.dart';
 import 'package:medico/anotherScreen.dart';

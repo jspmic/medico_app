@@ -42,13 +42,13 @@ class _AnotherPageState extends State<AnotherPage> {
 
   @override
   Widget build(BuildContext context) {
-	  return Center(
+	  return SingleChildScrollView(
+		  child: Center(
 			  child: Padding(
 			  padding: EdgeInsets.all(MediaQuery.of(context).size.width/8),
 			  child:
 				  Column(
 					  children: [
-						  SizedBox(height: MediaQuery.of(context).size.height/15),
                     Form(child: Padding(padding: EdgeInsets.all(16.0), child:
                       Column(
                         children: [
@@ -120,6 +120,7 @@ class _AnotherPageState extends State<AnotherPage> {
 						]
 					) // Column
 				) // Padding
-		); // Center
+		) // Center
+		); // SingleChildScrollView
   }
 }

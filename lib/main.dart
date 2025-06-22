@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
   void changeThemeFunction() {
     setState(() {
       changeTheme = true;
-      background = background == Colors.white ? Colors.grey[900] : Colors.white;
+      background = background == Colors.white ? Colors.blueGrey[900] : Colors.white;
     });
   }
 
@@ -113,14 +113,12 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return SizedBox(
-            width: double.infinity,
-            height: double.infinity,
             child: Scaffold(
               resizeToAvoidBottomInset: true,
               backgroundColor: background,
               body: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  margin: const EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.height/40),
+                  margin: EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
                       child: Column(children: [
                     SizedBox(
@@ -174,12 +172,13 @@ class _LoginPageState extends State<LoginPage> {
                         isLoading ? CircularProgressIndicator()
                             : FloatingActionButton(onPressed: authenticate,
                           backgroundColor: Colors.red,
+						  elevation: 2,
                           child: Icon(Icons.login_rounded, color: getColor(background))),
                         SizedBox(height: MediaQuery.of(context).size.height/13),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("Pas encore de compte ?", style: TextStyle(color: getColor(background))),
+                            Text("Pas de compte?", style: TextStyle(color: getColor(background))),
                             ElevatedButton(onPressed: () => changeThemeFunction(),
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                               child: Text("Créer un compte", style: TextStyle(color: getColor(background)))),

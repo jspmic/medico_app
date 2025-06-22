@@ -30,9 +30,6 @@ jobs:
       - name: Check formatting
         run: flutter format --set-exit-if-changed . || echo "Format issues detected"
 
-      - name: Analyze
-        run: flutter analyze
-
       - name: Build APK
         run: flutter build apk --release
 

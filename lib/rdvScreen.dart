@@ -20,15 +20,38 @@ class Rdv extends StatelessWidget {
     return Scaffold(
 	  backgroundColor: background,
       appBar: AppBar(
-	  backgroundColor: Colors.transparent,
-      title: Row(
-		  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-		  children: [
-		  	IconButton(onPressed: (){ Navigator.pop(context); }, icon: Icon(Icons.arrow_back, color: Colors.red)), // back button
-		  	IconButton(onPressed: (){}, icon: Icon(Icons.dehaze, color: Colors.red)) // menu button
-		  ]
-      ) // Row
-      ),
+		  backgroundColor: Colors.transparent,
+		  title: Align(
+			  alignment: Alignment.topRight,
+			  child: IconButton(onPressed: (){ Navigator.pop(context); }, icon: Icon(Icons.arrow_back, color: Colors.red)), // back button
+		  ), // Align
+		  leading: Builder(
+			  builder: (context) {
+				return Align(
+				alignment: Alignment.topCenter,
+				child: IconButton(
+				  color: Colors.red,
+				  icon: const Icon(Icons.menu),
+				  onPressed: () {
+					Scaffold.of(context).openDrawer();
+          },
+        ) // IconButton
+		); // Align
+      },
+    ),
+      ), // AppBar
+	  drawer: Drawer(
+		  backgroundColor: background,
+		  elevation: 0,
+		  child: ListView(
+			children: [
+				DrawerHeader(
+				  decoration: BoxDecoration(color: getSubtitlesColor(background)),
+				  child: Text('Menu', style: TextStyle(color: getColor(background))),
+            ),
+			]
+		  ) // ListView
+	  ),
 	  body: RdvPage(),
 	  );
   }

@@ -4,6 +4,9 @@ import 'package:medico/models/user.dart';
 import 'package:medico/rdvScreen.dart' as rdvScreen;
 import 'package:medico/myselfScreen.dart';
 import 'package:medico/anotherScreen.dart';
+import 'package:medico/api/utilisateur_model.dart';
+import 'package:medico/api/utilisateur_api.dart';
+import 'package:medico/checkers.dart';
 
 // These will be defined later depending on the context we're in
 // background: will contain the startup background depending on the device's theme
@@ -72,10 +75,10 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isLoading = false;
   Color state = background == Colors.white ? Colors.black : Colors.white;
-  String _uname = "";
+  String _contact = "";
   String _pssw = "";
 
-  var username = TextEditingController();
+  var contact = TextEditingController();
   var pssw = TextEditingController();
 
   void authenticate() async{
@@ -86,16 +89,31 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
-    isLoading = true;
-    String _hashed = _pssw.toString();
+
+	String contactDetail = _contact.toString();
+    String password = _pssw.toString();
+	bool status = false;
+	if (checkPhoneNumber(contactDetail)) {
+		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, numeroTelephone: contactDetail);
+		if (user != null) {
+			status = true;
+		}
+	}
+	else {
+		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, email: contactDetail);
+		if (user != null) {
+			status = true;
+		}
+	}
+
     setState(() {
       isLoading = false;
     });
 
-    if (mounted) {
-      username.text = "";
+    if (mounted && status) {
+      contact.text = "";
       pssw.text = "";
       Navigator.push(context, 
 	  	MaterialPageRoute(builder: (context) {
@@ -139,20 +157,20 @@ class _LoginPageState extends State<LoginPage> {
                           TextFormField(
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                              labelText: "Nom d'utilisateur...",
+                              labelText: "Email (ou numero de téléphone)",
                                 labelStyle: TextStyle(color: getColor(background), fontSize: 12),
                               suffixIcon: Icon(Icons.person, color: getColor(background)),
                             ),
-                            controller: username,
+                            controller: contact,
                             style: TextStyle(color: getColor(background)),
                             validator: (value) => _validateField(value),
-                            onSaved: (value) => _uname = value!,
+                            onSaved: (value) => _contact = value!,
                           ),
                           SizedBox(height: 15),
                           TextFormField(
                             decoration: InputDecoration(
                                 border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                                labelText: "Mot de passe...",
+                                labelText: "Mot de passe",
 								suffixIcon: IconButton(onPressed: () {
 								setState(() {
 								  passwordVisible = !passwordVisible;

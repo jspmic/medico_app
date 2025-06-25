@@ -10,6 +10,7 @@ class User {
 	String sexe = "";
 	String province = "";
 	String commune = "";
+	String password = "";
 	String? tel;
 	String? email;
 	String? nomReference;

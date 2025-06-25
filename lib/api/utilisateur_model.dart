@@ -1,38 +1,36 @@
 import 'dart:convert';
 
-// Utilisateur model to consume the GET /user response from the API
+UtilisateurModel utilisateurFromJson(String str) => UtilisateurModel.fromJson(json.decode(str));
 
-Utilisateur utilisateurFromJson(String str) => Utilisateur.fromJson(json.decode(str));
+String utilisateurToJson(UtilisateurModel data) => json.encode(data.toJson());
 
-String utilisateurToJson(Utilisateur data) => json.encode(data.toJson());
-
-class Utilisateur {
-    int id;
-    String nom;
-    DateTime dateNaissance;
-    String email;
-    String numeroTelephone;
-    String province;
-    String commune;
-    String password;
+class UtilisateurModel {
+    int? id;
+    String? nom;
+    DateTime? dateNaissance;
+    String? email;
+    String? numeroTelephone;
+    String? province;
+    String? commune;
+    String? password;
     String? accessToken;
 
-    Utilisateur({
-        required this.id,
-        required this.nom,
-        required this.dateNaissance,
-        required this.email,
-        required this.numeroTelephone,
-        required this.province,
-        required this.commune,
-        required this.password,
+    UtilisateurModel({
+        this.id,
+        this.nom,
+        this.dateNaissance,
+        this.email,
+        this.numeroTelephone,
+        this.province,
+        this.commune,
+        this.password,
         this.accessToken,
     });
 
-    factory Utilisateur.fromJson(Map<String, dynamic> json) => Utilisateur(
+    factory UtilisateurModel.fromJson(Map<String, dynamic> json) => UtilisateurModel(
         id: json["id"],
         nom: json["nom"],
-        dateNaissance: DateTime.parse(json["dateNaissance"]),
+        dateNaissance: json["dateNaissance"] == null ? null : DateTime.parse(json["dateNaissance"]),
         email: json["email"],
         numeroTelephone: json["numeroTelephone"],
         province: json["province"],
@@ -42,8 +40,9 @@ class Utilisateur {
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "nom": nom,
-        "dateNaissance": "${dateNaissance.year.toString().padLeft(4, '0')}-${dateNaissance.month.toString().padLeft(2, '0')}-${dateNaissance.day.toString().padLeft(2, '0')}",
+        "dateNaissance": "${dateNaissance!.year.toString().padLeft(4, '0')}-${dateNaissance!.month.toString().padLeft(2, '0')}-${dateNaissance!.day.toString().padLeft(2, '0')}",
         "email": email,
         "numeroTelephone": numeroTelephone,
         "province": province,

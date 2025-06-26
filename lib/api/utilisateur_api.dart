@@ -3,17 +3,20 @@ import "utilisateur_model.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-final String HOST="http://192.168.42.81:5000";
+final String host = String.fromEnvironment('HOST');
 
 
 class UtilisateurApi {
 	Future<UtilisateurModel?> checkUser({String? email, String? numeroTelephone, required String password}) async {
+		if (host.isEmpty) {
+		  throw AssertionError('HOST is not set');
+		}
 		Uri uri;
 		if (email != null) {
-			uri = Uri.parse("$HOST/user?email=$email&password=$password");
+			uri = Uri.parse("$host/user?email=$email&password=$password");
 		}
 		else if (numeroTelephone != null) {
-			uri = Uri.parse("$HOST/user?numeroTelephone=$numeroTelephone&password=$password");
+			uri = Uri.parse("$host/user?numeroTelephone=$numeroTelephone&password=$password");
 		}
 		else {
 			return null;
@@ -26,7 +29,10 @@ class UtilisateurApi {
 		return null;
 	}
 	Future<bool> insertUser(UtilisateurModel user) async {
-		var uri = Uri.parse("$HOST/user");
+		if (host.isEmpty) {
+		  throw AssertionError('HOST is not set');
+		}
+		var uri = Uri.parse("$host/user");
 		http.Response response = await http.post(
 			uri,
 			headers: <String, String>{

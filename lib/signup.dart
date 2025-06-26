@@ -103,19 +103,6 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-	  pssw.text = "test";
-	  confirmPssw.text = "test";
-	  email.text = "micaeljaspe@gmail.com";
-	  nom.text = "Jaspe Michaël";
-	  sexe.text = "Masculin";
-	  province.text = "Bujumbura";
-	  commune.text = "Ntahangwa";
-	  _pssw = pssw.text;
-	  user.email = email.text;
-	  user.nom = nom.text;
-	  user.sexe = "M";
-	  user.province = province.text;
-	  user.commune = commune.text;
 	  return SingleChildScrollView(
 		  child: Center(
 			  child: Padding(

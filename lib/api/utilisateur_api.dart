@@ -3,7 +3,7 @@ import "utilisateur_model.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-final String HOST="http://192.168.1.106:5000"
+final String HOST="http://192.168.42.81:5000";
 
 
 class UtilisateurApi {
@@ -21,7 +21,7 @@ class UtilisateurApi {
 
 		http.Response response = await http.get(uri);
 		if (response.statusCode == 200) {
-			return utilisateurFromJson(const Utf8Decoder().convert(response.bodyBytes));
+			return utilisateurFromJson(json.decode(response.body));
 		}
 		return null;
 	}
@@ -32,7 +32,7 @@ class UtilisateurApi {
 			headers: <String, String>{
 			  'Content-Type': 'application/json; charset=UTF-8'
 			},
-			body: user.toJson()
+			body: utilisateurToJson(user)
 		);
 		if (response.statusCode == 201) {
 			return true;

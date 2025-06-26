@@ -26,9 +26,17 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   build_runner: ^2.5.3
   json_serializable: ^6.9.5
+  flutter_launcher_icons: 0.13.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
     - assets/logo/
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  min_sdk_android: 29
+  image_path: "assets/logo/medico_logo_official.png"
+  remove_alpha_channel_ios: true
+  remove_alpha_ios: true

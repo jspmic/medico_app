@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medico/customWidgets.dart';
-import 'package:medico/models/user.dart';
-import 'package:medico/rdvScreen.dart' as rdvScreen;
-import 'package:medico/myselfScreen.dart';
-import 'package:medico/anotherScreen.dart';
+import 'package:medico/custom_widgets.dart';
+import 'package:medico/rdvScreen.dart' as rdv_screen;
+import 'package:medico/signup.dart' as signup;
 import 'package:medico/api/utilisateur_model.dart';
 import 'package:medico/api/utilisateur_api.dart';
 import 'package:medico/checkers.dart';
@@ -33,9 +31,16 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "Medico",
+		initialRoute: '/',
         theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
             useMaterial3: true,
@@ -78,8 +83,8 @@ class _LoginPageState extends State<LoginPage> {
   String _contact = "";
   String _pssw = "";
 
-  var contact = TextEditingController();
-  var pssw = TextEditingController();
+  TextEditingController contact = TextEditingController();
+  TextEditingController pssw = TextEditingController();
 
   void authenticate() async{
     if (_formKey.currentState!.validate()){
@@ -117,8 +122,8 @@ class _LoginPageState extends State<LoginPage> {
       pssw.text = "";
       Navigator.push(context, 
 	  	MaterialPageRoute(builder: (context) {
-			rdvScreen.ScreenTransition(backgroundColor: background);
-			return rdvScreen.Rdv();
+			rdv_screen.ScreenTransition(backgroundColor: background);
+			return rdv_screen.Rdv();
 		}),
 		);
     }
@@ -129,7 +134,6 @@ class _LoginPageState extends State<LoginPage> {
     if (changeTheme == false) {
       background = getDeviceTheme(context);
     }
-
     return SizedBox(
             child: Scaffold(
               resizeToAvoidBottomInset: true,
@@ -197,7 +201,14 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text("Pas de compte?", style: TextStyle(color: getColor(background))),
-                            ElevatedButton(onPressed: () => changeThemeFunction(),
+                            ElevatedButton(onPressed: () {
+							      Navigator.push(context, 
+									MaterialPageRoute(builder: (context) {
+										signup.ScreenTransition(backgroundColor: background);
+										return signup.Signup();
+									}),
+									);
+							},
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                               child: Text("Créer un compte", style: TextStyle(color: getColor(background)))),
                           ]

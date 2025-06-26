@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medico/checkers.dart';
 import 'custom_widgets.dart';
-import 'main.dart';
 import 'package:medico/api/utilisateur_api.dart';
 import 'package:medico/api/utilisateur_model.dart';
 
@@ -62,7 +61,9 @@ class _OtpPageState extends State<OtpPage> {
     });
 	bool status = verifyOtp(otp);
 	if (status) {
+		print("waiting...");
 		bool accountStatus = await UtilisateurApi().insertUser(user);
+		print(accountStatus);
 		setState(() {
 		  isLoading = false;
 		});

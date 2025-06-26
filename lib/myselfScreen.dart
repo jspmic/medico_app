@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medico/models/user.dart';
-import 'package:medico/customWidgets.dart';
+import 'package:medico/custom_widgets.dart';
 
 late Color? background;
 class ScreenTransition {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medico/customWidgets.dart';
-import 'package:medico/user.dart';
-import 'package:medico/rdvScreen.dart' as rdvScreen;
-import 'package:medico/myselfScreen.dart';
-import 'package:medico/anotherScreen.dart';
+import 'package:medico/custom_widgets.dart';
+import 'package:medico/rdvScreen.dart' as rdv_screen;
+import 'package:medico/signup.dart' as signup;
+import 'package:medico/api/utilisateur_model.dart';
+import 'package:medico/api/utilisateur_api.dart';
+import 'package:medico/checkers.dart';
 
 // These will be defined later depending on the context we're in
 // background: will contain the startup background depending on the device's theme
@@ -30,9 +31,16 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "Medico",
+		initialRoute: '/',
         theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
             useMaterial3: true,
@@ -72,11 +80,11 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isLoading = false;
   Color state = background == Colors.white ? Colors.black : Colors.white;
-  String _uname = "";
+  String _contact = "";
   String _pssw = "";
 
-  var username = TextEditingController();
-  var pssw = TextEditingController();
+  TextEditingController contact = TextEditingController();
+  TextEditingController pssw = TextEditingController();
 
   void authenticate() async{
     if (_formKey.currentState!.validate()){
@@ -86,21 +94,36 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
-    isLoading = true;
-    String _hashed = _pssw.toString();
+
+	String contactDetail = _contact.toString();
+    String password = _pssw.toString();
+	bool status = false;
+	if (checkPhoneNumber(contactDetail)) {
+		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, numeroTelephone: contactDetail);
+		if (user != null) {
+			status = true;
+		}
+	}
+	else {
+		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, email: contactDetail);
+		if (user != null) {
+			status = true;
+		}
+	}
+
     setState(() {
       isLoading = false;
     });
 
-    if (mounted) {
-      username.text = "";
+    if (mounted && status) {
+      contact.text = "";
       pssw.text = "";
       Navigator.push(context, 
 	  	MaterialPageRoute(builder: (context) {
-			rdvScreen.ScreenTransition(backgroundColor: background);
-			return rdvScreen.Rdv();
+			rdv_screen.ScreenTransition(backgroundColor: background);
+			return rdv_screen.Rdv();
 		}),
 		);
     }
@@ -111,7 +134,6 @@ class _LoginPageState extends State<LoginPage> {
     if (changeTheme == false) {
       background = getDeviceTheme(context);
     }
-
     return SizedBox(
             child: Scaffold(
               resizeToAvoidBottomInset: true,
@@ -139,20 +161,20 @@ class _LoginPageState extends State<LoginPage> {
                           TextFormField(
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                              labelText: "Nom d'utilisateur...",
+                              labelText: "Email (ou numero de téléphone)",
                                 labelStyle: TextStyle(color: getColor(background), fontSize: 12),
                               suffixIcon: Icon(Icons.person, color: getColor(background)),
                             ),
-                            controller: username,
+                            controller: contact,
                             style: TextStyle(color: getColor(background)),
                             validator: (value) => _validateField(value),
-                            onSaved: (value) => _uname = value!,
+                            onSaved: (value) => _contact = value!,
                           ),
                           SizedBox(height: 15),
                           TextFormField(
                             decoration: InputDecoration(
                                 border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                                labelText: "Mot de passe...",
+                                labelText: "Mot de passe",
 								suffixIcon: IconButton(onPressed: () {
 								setState(() {
 								  passwordVisible = !passwordVisible;
@@ -179,7 +201,14 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text("Pas de compte?", style: TextStyle(color: getColor(background))),
-                            ElevatedButton(onPressed: () => changeThemeFunction(),
+                            ElevatedButton(onPressed: () {
+							      Navigator.push(context, 
+									MaterialPageRoute(builder: (context) {
+										signup.ScreenTransition(backgroundColor: background);
+										return signup.Signup();
+									}),
+									);
+							},
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                               child: Text("Créer un compte", style: TextStyle(color: getColor(background)))),
                           ]

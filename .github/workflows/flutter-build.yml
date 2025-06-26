@@ -31,7 +31,7 @@ jobs:
         run: flutter format --set-exit-if-changed . || echo "Format issues detected"
 
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --dart-define HOST="https://jspemic.pythonanywhere.com"
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4

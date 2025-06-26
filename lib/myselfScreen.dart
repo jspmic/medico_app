@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medico/user.dart';
-import 'package:medico/customWidgets.dart';
+import 'package:medico/custom_widgets.dart';
 
 late Color? background;
 class ScreenTransition {
@@ -19,13 +18,8 @@ class Myself extends StatelessWidget {
 	  backgroundColor: background,
       appBar: AppBar(
 	  backgroundColor: Colors.transparent,
-      title: Row(
-		  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-		  children: [
-		  	IconButton(onPressed: (){ Navigator.pop(context); }, icon: Icon(Icons.arrow_back, color: Colors.red)), // back button
-		  ]
-      ) // Row
-      ),
+      leading: IconButton(onPressed: (){ Navigator.pop(context); }, icon: Icon(Icons.arrow_back, color: Colors.red)), // back button
+      ), // AppBar
 	  body: MyselfPage(),
 	  );
   }

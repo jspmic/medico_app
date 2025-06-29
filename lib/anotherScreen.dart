@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:medico/custom_widgets.dart';
+import 'package:medico/api/utilisateur_model.dart';
 
 late Color? background;
+UtilisateurModel utilisateur = UtilisateurModel();
 class ScreenTransition {
   late Color? backgroundColor;
-  ScreenTransition({required this.backgroundColor}) {
+  UtilisateurModel user;
+  ScreenTransition({required this.backgroundColor, required this.user}) {
     background = backgroundColor;
+	utilisateur = user;
   }
 }
 
@@ -33,6 +37,7 @@ class AnotherPage extends StatefulWidget {
 }
 
 class _AnotherPageState extends State<AnotherPage> {
+  TextEditingController service = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,11 @@ class _AnotherPageState extends State<AnotherPage> {
                     Form(child: Padding(padding: EdgeInsets.all(16.0), child:
                       Column(
                         children: [
+						  Services(
+						  	controller: service,
+							backgroundColor: background!,
+							onSelect: (value){}
+						  ),
                           TextFormField(
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),

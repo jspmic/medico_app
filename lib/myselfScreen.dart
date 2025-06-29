@@ -58,6 +58,7 @@ class _MyselfPageState extends State<MyselfPage> {
 						  ),
                           TextFormField(
                             decoration: InputDecoration(
+							  enabled: false,
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
                               labelText: "Numéro de Téléphone (optionnel)",
                                 labelStyle: TextStyle(color: getColor(background), fontSize: 12),

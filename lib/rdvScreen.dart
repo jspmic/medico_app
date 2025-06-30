@@ -105,7 +105,8 @@ Widget index1(BuildContext context) {
   email.text = utilisateur.email!;
   numeroTelephone.text = utilisateur.numeroTelephone!;
   dateNaissance.text = "${date.day}/${date.month}/${date.year}";
-  return Center(
+  return SingleChildScrollView(
+  child: Center(
 		  child: Padding(
 		  padding: EdgeInsets.all(MediaQuery.of(context).size.width/10),
 		  child:
@@ -159,7 +160,8 @@ Widget index1(BuildContext context) {
 				  ]
 				) // Column
 			) // Padding
-		); // Center
+		) // Center
+	); // SingleChildScrollView
 }
 
 class RdvPage extends StatefulWidget {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'dart:convert';
-import 'package:medico/rdvScreen.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 Map<String?, dynamic> communes = {};
@@ -122,6 +120,47 @@ class _CommuneState extends State<Commune> {
 		leadingIcon: Icon(Icons.cabin, color: Colors.red),
 		dropdownMenuEntries: selectedCommunes.map((commune) {
 			return DropdownMenuEntry(value: commune, label: commune,
+				style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(getColor(widget.backgroundColor))));
+		}).toList(),
+	) // DropdownMenu
+	); // Align
+  }
+}
+
+class Services extends StatefulWidget {
+  final Color backgroundColor;
+  final Function(String province) onSelect;
+  final TextEditingController controller;
+  const Services({super.key, required this.onSelect, required this.backgroundColor,
+  				 required this.controller});
+
+  @override
+  State<Services> createState() => _ServicesState();
+}
+
+class _ServicesState extends State<Services> {
+  @override
+  Widget build(BuildContext context) {
+  	return Align(
+	alignment: Alignment.topLeft,
+	child: DropdownMenu(
+		menuStyle: MenuStyle(backgroundColor: WidgetStatePropertyAll<Color>(widget.backgroundColor),
+		elevation: WidgetStatePropertyAll<double>(2.0),
+		),
+		inputDecorationTheme: InputDecorationTheme(
+			border: InputBorder.none,
+			enabledBorder: InputBorder.none,
+			focusedBorder: InputBorder.none,
+			hintStyle: TextStyle(color: getColor(widget.backgroundColor), fontSize: 14)
+		),
+		textStyle: TextStyle(color: getColor(widget.backgroundColor), fontSize: 14),
+		enabled: services.isNotEmpty,
+		onSelected: (value) => widget.onSelect(value),
+		hintText: "Service",
+		controller: widget.controller,
+		leadingIcon: Icon(Icons.medical_services, color: Colors.red),
+		dropdownMenuEntries: services.map((service) {
+			return DropdownMenuEntry(value: service, label: service,
 				style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(getColor(widget.backgroundColor))));
 		}).toList(),
 	) // DropdownMenu

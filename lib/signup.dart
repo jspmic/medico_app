@@ -66,9 +66,14 @@ class _SignupPageState extends State<SignupPage> {
     return value == null || value.isEmpty ? "Champ obligatoire" : null;
   }
 
-  String? _validatePasswordFields(String? value){
-    return value == null || value.isEmpty || confirmPssw.text != pssw.text ?
-	"Mots de passe différents" : null;
+  String? _validatePasswordFields(String? value) {
+    if (value == null || value.isEmpty || confirmPssw.text != pssw.text) {
+		return "Mots de passe différents";
+	}
+	else if (value.length < 8) {
+		return "Le mot de passe doit contenir au moins 8 caractères";
+	}
+	return null;
   }
 
   void authenticate() async{

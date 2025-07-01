@@ -10,7 +10,7 @@ import 'package:medico/checkers.dart';
 // background: will contain the startup background depending on the device's theme
 // changeTheme: will determine the boolean value,
 // that represents whether to change the theme to dark or light
-Color? background = Colors.grey[900];
+Color? background;
 bool changeTheme = false;
 
 // Function that returns the Color depending on the device's theme
@@ -74,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
     return value == null || value.isEmpty ? "Champ obligatoire" : null;
   }
 
+  UtilisateurModel utilisateur = UtilisateurModel();
   bool passwordVisible = false;
 
   Color? fieldColor = Colors.grey[300];
@@ -103,12 +104,14 @@ class _LoginPageState extends State<LoginPage> {
 	if (checkPhoneNumber(contactDetail)) {
 		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, numeroTelephone: contactDetail);
 		if (user != null) {
+			utilisateur = user;
 			status = true;
 		}
 	}
 	else {
 		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, email: contactDetail);
 		if (user != null) {
+			utilisateur = user;
 			status = true;
 		}
 	}
@@ -122,8 +125,8 @@ class _LoginPageState extends State<LoginPage> {
       pssw.text = "";
       Navigator.push(context, 
 	  	MaterialPageRoute(builder: (context) {
-			rdv_screen.ScreenTransition(backgroundColor: background);
-			return rdv_screen.Rdv();
+			rdv_screen.ScreenTransition(backgroundColor: background, user: utilisateur);
+			return rdv_screen.RdvPage();
 		}),
 		);
     }
@@ -134,6 +137,8 @@ class _LoginPageState extends State<LoginPage> {
     if (changeTheme == false) {
       background = getDeviceTheme(context);
     }
+	pssw.text = "test";
+	contact.text = "micaeljaspe@gmail.com";
     return SizedBox(
             child: Scaffold(
               resizeToAvoidBottomInset: true,
@@ -196,6 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: Colors.red,
 						  elevation: 2,
                           child: Icon(Icons.login_rounded, color: getColor(background))),
+						IconButton(icon: Icon(Icons.dark_mode, color: Colors.red), onPressed: () => changeThemeFunction()),
                         SizedBox(height: MediaQuery.of(context).size.height/13),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'api/utilisateur_api.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 Map<String?, dynamic> communes = {};
-List services = [];
 List provinces = [];
+List selectedServices = [];
 List selectedCommunes = [];
+
+// Function to clear all fields when returning back from a page
+void clearFields() {
+	selectedServices = [];
+	selectedCommunes = [];
+}
+
 
 // Particular functions to get colors depending on the background color
 Color? getColor(Color? backgroundColor) {
@@ -24,12 +32,6 @@ Future<void> loadCommunesAsset() async {
   provinces = data.keys.toList();
 }
 
-Future<void> loadServicesAsset() async {
-  final String jsonString = await rootBundle.loadString('assets/services.json');
-  final List data = jsonDecode(jsonString);
-  services = data;
-}
-
 void populateCommunes(String province) {
 	selectedCommunes = communes[province];
 }
@@ -37,7 +39,6 @@ void populateCommunes(String province) {
 // Function to initialize all the required fields
 void init() {
 	loadCommunesAsset();
-	loadServicesAsset();
 }
 
 
@@ -127,18 +128,18 @@ class _CommuneState extends State<Commune> {
   }
 }
 
-class Services extends StatefulWidget {
+class Hopital extends StatefulWidget {
   final Color backgroundColor;
-  final Function(String province) onSelect;
+  final Function(String? hopital) onSelect;
   final TextEditingController controller;
-  const Services({super.key, required this.onSelect, required this.backgroundColor,
+  const Hopital({super.key, required this.onSelect, required this.backgroundColor,
   				 required this.controller});
 
   @override
-  State<Services> createState() => _ServicesState();
+  State<Hopital> createState() => _HopitalState();
 }
 
-class _ServicesState extends State<Services> {
+class _HopitalState extends State<Hopital> {
   @override
   Widget build(BuildContext context) {
   	return Align(
@@ -153,14 +154,57 @@ class _ServicesState extends State<Services> {
 			focusedBorder: InputBorder.none,
 			hintStyle: TextStyle(color: getColor(widget.backgroundColor), fontSize: 14)
 		),
+		expandedInsets: EdgeInsetsGeometry.directional(start: 0, end: MediaQuery.of(context).size.width/20),
 		textStyle: TextStyle(color: getColor(widget.backgroundColor), fontSize: 14),
-		enabled: services.isNotEmpty,
+		enabled: hopitaux.isNotEmpty,
+		onSelected: (value) => widget.onSelect(value),
+		hintText: "Hopital",
+		controller: widget.controller,
+		leadingIcon: Icon(Icons.cabin, color: Colors.red),
+		dropdownMenuEntries: hopitaux.keys.map((hopital) {
+			return DropdownMenuEntry(value: hopital, label: hopital,
+				style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(getColor(widget.backgroundColor))));
+		}).toList(),
+	) // DropdownMenu
+	); // Align
+  }
+}
+
+class Service extends StatefulWidget {
+  final Color backgroundColor;
+  final Function(String province) onSelect;
+  final TextEditingController controller;
+  const Service({super.key, required this.onSelect, required this.backgroundColor,
+  				 required this.controller});
+
+  @override
+  State<Service> createState() => _ServiceState();
+}
+
+class _ServiceState extends State<Service> {
+  @override
+  Widget build(BuildContext context) {
+  	return Align(
+	alignment: Alignment.topLeft,
+	child: DropdownMenu(
+		menuStyle: MenuStyle(backgroundColor: WidgetStatePropertyAll<Color>(widget.backgroundColor),
+		elevation: WidgetStatePropertyAll<double>(2.0),
+		),
+		inputDecorationTheme: InputDecorationTheme(
+			border: InputBorder.none,
+			enabledBorder: InputBorder.none,
+			focusedBorder: InputBorder.none,
+			hintStyle: TextStyle(color: getColor(widget.backgroundColor), fontSize: 14)
+		),
+		expandedInsets: EdgeInsetsGeometry.directional(start: 0, end: MediaQuery.of(context).size.width/20),
+		textStyle: TextStyle(color: getColor(widget.backgroundColor), fontSize: 14),
+		enabled: selectedServices.isNotEmpty,
 		onSelected: (value) => widget.onSelect(value),
 		hintText: "Service",
 		controller: widget.controller,
-		leadingIcon: Icon(Icons.medical_services, color: Colors.red),
-		dropdownMenuEntries: services.map((service) {
-			return DropdownMenuEntry(value: service, label: service,
+		leadingIcon: Icon(Icons.cabin, color: Colors.red),
+		dropdownMenuEntries: selectedServices.map((commune) {
+			return DropdownMenuEntry(value: commune, label: commune,
 				style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(getColor(widget.backgroundColor))));
 		}).toList(),
 	) // DropdownMenu

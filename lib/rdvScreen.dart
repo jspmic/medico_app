@@ -106,7 +106,7 @@ Widget index1(BuildContext context) {
   numeroTelephone.text = utilisateur.numeroTelephone!;
   dateNaissance.text = "${date.day}/${date.month}/${date.year}";
   return SingleChildScrollView(
-  child: Center(
+	  child: Center(
 		  child: Padding(
 		  padding: EdgeInsets.all(MediaQuery.of(context).size.width/10),
 		  child:

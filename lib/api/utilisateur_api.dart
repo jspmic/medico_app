@@ -3,7 +3,9 @@ import "utilisateur_model.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
+// Keys: hospitals' name
+// Values: List of services available
+Map<String, dynamic> hopitaux = {};
 
 class UtilisateurApi {
 	Future<UtilisateurModel?> checkUser({String? email, String? numeroTelephone, required String password}) async {
@@ -24,7 +26,12 @@ class UtilisateurApi {
 
 		http.Response response = await http.get(uri);
 		if (response.statusCode == 200) {
-			return utilisateurFromJson(json.decode(response.body));
+			Uri uri2 = Uri.parse("$host/hopital");
+			http.Response response2 = await http.get(uri2);
+			String body = json.decode(response.body);
+			Map<String, dynamic> body2 = json.decode(response2.body);
+			hopitaux = body2['hopitaux'];
+			return utilisateurFromJson(body);
 		}
 		return null;
 	}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medico/custom_widgets.dart';
 import 'package:medico/api/utilisateur_model.dart';
+import 'package:medico/api/utilisateur_api.dart';
 
 late Color? background;
 UtilisateurModel utilisateur = UtilisateurModel();
@@ -22,7 +23,10 @@ class Another extends StatelessWidget {
 	  backgroundColor: background,
       appBar: AppBar(
 	  backgroundColor: Colors.transparent,
-      leading: IconButton(onPressed: (){ Navigator.pop(context); }, icon: Icon(Icons.arrow_back, color: Colors.red)), // back button
+      leading: IconButton(onPressed: (){
+			clearFields();
+	  		Navigator.pop(context);
+		}, icon: Icon(Icons.arrow_back, color: Colors.red)), // back button
       ),
 	  body: AnotherPage(),
 	  );
@@ -38,6 +42,8 @@ class AnotherPage extends StatefulWidget {
 
 class _AnotherPageState extends State<AnotherPage> {
   TextEditingController service = TextEditingController();
+  TextEditingController hopital = TextEditingController();
+  String? selectedHopital;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +57,24 @@ class _AnotherPageState extends State<AnotherPage> {
                     Form(child: Padding(padding: EdgeInsets.all(16.0), child:
                       Column(
                         children: [
-						  Services(
+						  Hopital(
+						  	controller: hopital,
+							backgroundColor: background!,
+							onSelect: (value) {
+								setState(() {
+									service.text = "";
+									selectedServices = [];
+								});
+								selectedHopital = value;
+								setState(() {
+									selectedServices = hopitaux[selectedHopital];
+								});
+							}
+						  ),
+						  Service(
 						  	controller: service,
 							backgroundColor: background!,
-							onSelect: (value){}
+							onSelect: (value){},
 						  ),
                           TextFormField(
                             decoration: InputDecoration(

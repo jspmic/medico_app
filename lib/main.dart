@@ -137,8 +137,6 @@ class _LoginPageState extends State<LoginPage> {
     if (changeTheme == false) {
       background = getDeviceTheme(context);
     }
-	pssw.text = "test";
-	contact.text = "micaeljaspe@gmail.com";
     return SizedBox(
             child: Scaffold(
               resizeToAvoidBottomInset: true,

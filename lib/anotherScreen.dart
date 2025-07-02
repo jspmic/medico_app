@@ -43,7 +43,14 @@ class AnotherPage extends StatefulWidget {
 class _AnotherPageState extends State<AnotherPage> {
   TextEditingController service = TextEditingController();
   TextEditingController hopital = TextEditingController();
+  TextEditingController province = TextEditingController();
+  TextEditingController commune = TextEditingController();
+  TextEditingController sexe = TextEditingController();
   String? selectedHopital;
+
+  String? _validateField(String? value){
+    return value == null || value.isEmpty ? "Champ obligatoire" : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,39 +91,51 @@ class _AnotherPageState extends State<AnotherPage> {
                               suffixIcon: Icon(Icons.person, color: Colors.red),
                             ),
                             style: TextStyle(color: getColor(background)),
+							validator: _validateField,
                           ), // TextFormField
                           SizedBox(height: MediaQuery.of(context).size.height/25),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                              labelText: "Sexe (M ou F)",
-                                labelStyle: TextStyle(color: getColor(background), fontSize: 12),
-                              suffixIcon: Icon(Icons.wc, color: Colors.red),
-                            ),
-                            style: TextStyle(color: getColor(background)),
-                          ), // TextFormField
+						  DropdownMenu(
+							onSelected: (value) {},
+							menuStyle: MenuStyle(backgroundColor: WidgetStatePropertyAll<Color?>(background),
+							elevation: WidgetStatePropertyAll<double>(2.0),
+							),
+							inputDecorationTheme: InputDecorationTheme(
+								border: InputBorder.none,
+								enabledBorder: InputBorder.none,
+								focusedBorder: InputBorder.none,
+								hintStyle: TextStyle(color: getColor(background), fontSize: 14)
+							),
+							expandedInsets: EdgeInsetsGeometry.directional(start: 0, end: MediaQuery.of(context).size.width/20),
+							textStyle: TextStyle(color: getColor(background), fontSize: 14),
+							hintText: "Sexe",
+							controller: sexe,
+							leadingIcon: Icon(Icons.wc, color: Colors.red),
+							dropdownMenuEntries: [
+								DropdownMenuEntry(label: "Masculin", value: "M",style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(getColor(background)
+										) // WidgetStatePropertyAll
+									), leadingIcon: Icon(Icons.person) // ButtonStyle
+								), // DropdownMenuEntry
+								DropdownMenuEntry(label: "Feminin", value: "F",style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(getColor(background)
+										) // WidgetStatePropertyAll
+									), leadingIcon: Icon(Icons.woman) // ButtonStyle
+								), // DropdownMenuEntry
+							],
+						  ), // DropdownMenu
+                          SizedBox(height: MediaQuery.of(context).size.height/25),
+						  Province(onSelect: (value) {	// Province
+						  	setState(() {
+							  selectedCommunes = [];
+						  	  populateCommunes(value);
+						  	});
+						  }, backgroundColor: background!,
+						  controller: province),
+                          SizedBox(height: MediaQuery.of(context).size.height/25),
+						  Commune(onSelect: (value) {	// Commune
+						  }, backgroundColor: background!,
+						  controller: commune),
                           SizedBox(height: MediaQuery.of(context).size.height/25),
                           TextFormField(
-                            decoration: InputDecoration(
-                              border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                              labelText: "Province",
-                                labelStyle: TextStyle(color: getColor(background), fontSize: 12),
-                              suffixIcon: Icon(Icons.public, color: Colors.red),
-                            ),
-                            style: TextStyle(color: getColor(background)),
-                          ), // TextFormField
-                          SizedBox(height: MediaQuery.of(context).size.height/25),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                              labelText: "Commune",
-                                labelStyle: TextStyle(color: getColor(background), fontSize: 12),
-                              suffixIcon: Icon(Icons.cabin, color: Colors.red),
-                            ),
-                            style: TextStyle(color: getColor(background)),
-                          ), // TextFormField
-                          SizedBox(height: MediaQuery.of(context).size.height/25),
-                          TextFormField(
+			    enabled: false,
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
                               labelText: "Numéro de Téléphone (optionnel)",
@@ -129,11 +148,12 @@ class _AnotherPageState extends State<AnotherPage> {
                           TextFormField(
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(borderRadius: BorderRadius.circular(6)),
-                              labelText: "Email (optionnel)",
+                              labelText: "Email",
                                 labelStyle: TextStyle(color: getColor(background), fontSize: 12),
                               suffixIcon: Icon(Icons.alternate_email, color: Colors.red),
                             ),
                             style: TextStyle(color: getColor(background)),
+							validator: _validateField,
                           ), // TextFormField
                           SizedBox(height: MediaQuery.of(context).size.height/13),
                           FloatingActionButton(onPressed: (){},

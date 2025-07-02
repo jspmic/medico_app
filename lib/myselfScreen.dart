@@ -41,6 +41,8 @@ class MyselfPage extends StatefulWidget {
 }
 
 class _MyselfPageState extends State<MyselfPage> {
+  TextEditingController email = TextEditingController();
+  TextEditingController numeroTelephone = TextEditingController();
   TextEditingController service = TextEditingController();
   TextEditingController hopital = TextEditingController();
   String? selectedHopital;
@@ -85,6 +87,7 @@ class _MyselfPageState extends State<MyselfPage> {
                               suffixIcon: Icon(Icons.call, color: Colors.red),
                             ),
                             style: TextStyle(color: getColor(background)),
+							controller: numeroTelephone,
                           ), // TextFormField
                           SizedBox(height: MediaQuery.of(context).size.height/25),
                           TextFormField(
@@ -95,6 +98,7 @@ class _MyselfPageState extends State<MyselfPage> {
                               suffixIcon: Icon(Icons.alternate_email, color: Colors.red),
                             ),
                             style: TextStyle(color: getColor(background)),
+							controller: email,
                           ), // TextFormField
                           SizedBox(height: MediaQuery.of(context).size.height/13),
                           FloatingActionButton(onPressed: (){},

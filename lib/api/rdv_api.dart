@@ -25,7 +25,7 @@ class RdvApi {
 			return [];
 		}
 	}
-	Future<bool> insertRdv(String host, RdvModel rdv) async {
+	Future<bool> insertRdv(RdvModel rdv) async {
 		const host = String.fromEnvironment('HOST');
 		if (host.isEmpty) {
 		  throw AssertionError('HOST is not set');

@@ -42,15 +42,28 @@ class RdvModel {
         idRef: json["reference_id"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "nom": nom,
-        "sexe": sexe,
-        "contact": contact,
-        "province": province,
-        "commune": commune,
-        "dateTime": datetime?.toIso8601String(),
-        "hopital": hopital,
-        "service": service,
-        "reference_id": idRef,
-    };
+    Map<String, dynamic> toJson() {
+		if (province == null || commune == null) {
+			return {
+				"nom": nom,
+				"sexe": sexe,
+				"contact": contact,
+				"dateTime": datetime?.toIso8601String(),
+				"hopital": hopital,
+				"service": service,
+				"reference_id": idRef,
+			};
+		}
+		return {
+			"nom": nom,
+			"sexe": sexe,
+			"contact": contact,
+			"province": province,
+			"commune": commune,
+			"dateTime": datetime?.toIso8601String(),
+			"hopital": hopital,
+			"service": service,
+			"reference_id": idRef,
+		};
+	}
 }

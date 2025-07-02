@@ -9,13 +9,15 @@ class RdvApi {
 		if (host.isEmpty) {
 		  throw AssertionError('HOST is not set');
 		}
+
 		Uri uri = Uri.parse("$host/rdv?id_user=$userID");
 		http.Response response = await http.get(uri);
 		if (response.statusCode == 200) {
 			List<RdvModel?> listRdv = [];
-			List body = json.decode(response.body);
-			for (String rdv in body) {
-				listRdv.add(rdvFromJson(rdv));
+			var bodyDecoded = json.decode(json.decode(response.body));
+			List rdv = bodyDecoded['output'];
+			for (Map<String, dynamic> rendezvous in rdv) {
+				listRdv.add(RdvModel.fromJson(rendezvous));
 			}
 			return listRdv;
 		}

@@ -29,10 +29,11 @@ class RdvModel {
         id: json["id"],
         nom: json["nom"],
         sexe: json["sexe"],
-        contact: json["contact"],
-        datetime: json["dateTime"] == null ? null : DateTime.parse(json["datetime"]),
+        contact: json["contact"] == "null" ? null: json["contact"],
+        datetime: json["dateTime"] == null ? null : DateTime.parse(json["dateTime"]),
         hopital: json["hopital"],
         service: json["service"],
+        idRef: json["reference_id"],
     );
 
     Map<String, dynamic> toJson() => {

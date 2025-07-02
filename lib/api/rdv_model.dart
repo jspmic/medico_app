@@ -39,7 +39,7 @@ class RdvModel {
     Map<String, dynamic> toJson() => {
         "nom": nom,
         "sexe": sexe,
-        "contact": sexe,
+        "contact": contact,
         "dateTime": datetime?.toIso8601String(),
         "hopital": hopital,
         "service": service,

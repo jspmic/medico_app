@@ -9,6 +9,8 @@ class RdvModel {
     String? nom;
     String? sexe;
     String? contact;
+    String? province;
+    String? commune;
     DateTime? datetime;
     String? hopital;
     String? service;
@@ -19,6 +21,8 @@ class RdvModel {
         this.nom,
         this.sexe,
         this.contact,
+        this.province,
+        this.commune,
         this.datetime,
         this.hopital,
         this.service,
@@ -30,6 +34,8 @@ class RdvModel {
         nom: json["nom"],
         sexe: json["sexe"],
         contact: json["contact"] == "null" ? null: json["contact"],
+        province: json["province"] == "null" ? null: json["province"],
+        commune: json["commune"] == "null" ? null: json["commune"],
         datetime: json["dateTime"] == null ? null : DateTime.parse(json["dateTime"]),
         hopital: json["hopital"],
         service: json["service"],
@@ -40,6 +46,8 @@ class RdvModel {
         "nom": nom,
         "sexe": sexe,
         "contact": contact,
+        "province": contact,
+        "commune": contact,
         "dateTime": datetime?.toIso8601String(),
         "hopital": hopital,
         "service": service,

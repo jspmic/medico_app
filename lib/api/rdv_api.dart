@@ -25,18 +25,17 @@ class RdvApi {
 			return [];
 		}
 	}
-	Future<bool> insertRdv(RdvModel user) async {
-		const host = String.fromEnvironment('HOST');
+	Future<bool> insertRdv(String host, RdvModel rdv) async {
 		if (host.isEmpty) {
 		  throw AssertionError('HOST is not set');
 		}
-		var uri = Uri.parse("$host/user");
+		var uri = Uri.parse("$host/rdv");
 		http.Response response = await http.post(
 			uri,
 			headers: <String, String>{
 			  'Content-Type': 'application/json; charset=UTF-8'
 			},
-			body: rdvToJson(user)
+			body: rdvToJson(rdv)
 		);
 		if (response.statusCode == 201) {
 			return true;

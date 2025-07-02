@@ -19,6 +19,7 @@ dependencies:
   http: ^1.4.0
   flutter_secure_storage: ^9.2.4
   email_otp: ^3.0.2
+  board_datetime_picker: ^2.8.0
 
 dev_dependencies:
   flutter_test:

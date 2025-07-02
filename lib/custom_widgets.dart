@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:medico/api/rdv_api.dart';
+import 'package:medico/api/rdv_model.dart';
+import 'package:medico/api/utilisateur_model.dart';
+import 'package:medico/rdvScreen.dart';
 import 'api/utilisateur_api.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 
 Map<String?, dynamic> communes = {};
 List provinces = [];
@@ -39,6 +46,108 @@ void populateCommunes(String province) {
 // Function to initialize all the required fields
 void init() {
 	loadCommunesAsset();
+}
+
+// Function to pretty print a DateTime
+String prettyPrint(DateTime? d) {
+	return "\nDate: ${d?.day}/${d?.month}/${d?.year}\nHeure: ${d?.hour}:${d?.minute}";
+}
+
+// Custom DateTime picker
+Widget timePicker(BuildContext context, {required BoardDateTimeTextController controller,
+			 	  required Function(DateTime) onChanged, required Color? backgroundColor}) {
+  controller.setText("Jour et heure du rendez-vous");
+  return SingleChildScrollView(
+  child: SizedBox(
+    width: MediaQuery.of(context).size.width/3,
+    child: BoardDateTimeInputField(
+      controller: controller,
+	  minimumDate: DateTime.now(),
+	  maximumDate: DateTime.now().add(const Duration(hours: 24)),
+      pickerType: DateTimePickerType.datetime,
+      options: BoardDateTimeOptions(
+		languages: BoardPickerLanguages(
+			locale: 'fr',
+			today: 'Aujourd’hui',
+			tomorrow: 'Demain',
+			now: 'Maintenant',
+		  ),
+		backgroundColor: backgroundColor,
+		foregroundColor: Colors.red,
+		textColor: getColor(backgroundColor),
+		withSecond: false,
+		inputable: false,
+      ),
+      textStyle: TextStyle(color: getColor(backgroundColor)),
+      onChanged: (date) => onChanged(date),
+    ),
+  ));
+}
+
+// Custom Widgets to print Rdv
+
+class RdvDisplayer extends StatefulWidget {
+  final Color? backgroundColor;
+  final UtilisateurModel utilisateur;
+  const RdvDisplayer({super.key,
+					  required this.backgroundColor,
+					  required this.utilisateur});
+  @override
+  State<RdvDisplayer> createState() => _RdvDisplayerState();
+}
+
+class _RdvDisplayerState extends State<RdvDisplayer> {
+  bool isLoading = false;
+  List<RdvModel?> rdv = [];
+  
+  void fetchRdv() async {
+	if (utilisateur.id == null) {
+		return;
+	}
+  	setState(() {
+  	  isLoading = true;
+  	});
+	rdv = await RdvApi().getRdv(utilisateur.id!);
+	setState(() {
+	  isLoading = false;
+	});
+  }
+  @override
+  void initState() {
+	fetchRdv();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+  	return SingleChildScrollView(
+		child: isLoading ? CircularProgressIndicator()
+		: Column(
+		    mainAxisAlignment: MainAxisAlignment.center,
+		    crossAxisAlignment: CrossAxisAlignment.center,
+			children: rdv.map(
+				(value) {
+				  return Card(
+					elevation: 3,
+					color: background,
+					child: Column(
+					  mainAxisSize: MainAxisSize.min,
+					  children: <Widget>[
+						ListTile(
+						  leading: Icon(Icons.article, color: Colors.red),
+						  title: Text("Nom: ${value!.nom!}",
+						  				style: TextStyle(color: getColor(background))),
+						  subtitle: Text("Hopital: ${value.hopital!}\nService: ${value.service!.toUpperCase()} ${prettyPrint(value.datetime)}",
+							  style: TextStyle(color: getSubtitlesColor(background))),
+						),
+						  ],
+						),
+					); // Card
+				}
+			).toList(),
+		)
+	);
+  }
 }
 
 

@@ -157,6 +157,9 @@ Widget index1(BuildContext context) {
 								), // TextField
 							),
 					]), // Row
+					Divider(),
+					RdvDisplayer(utilisateur: utilisateur,
+								 backgroundColor: background)
 				  ]
 				) // Column
 			) // Padding

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-RDV rdvFromJson(String str) => RDV.fromJson(json.decode(str));
+RdvModel rdvFromJson(String str) => RdvModel.fromJson(json.decode(str));
 
-String rdvToJson(RDV data) => json.encode(data.toJson());
+String rdvToJson(RdvModel data) => json.encode(data.toJson());
 
-class RDV {
+class RdvModel {
     int? id;
     String? nom;
     String? sexe;
@@ -14,7 +14,7 @@ class RDV {
     String? service;
     int? idRef;
 
-    RDV({
+    RdvModel({
         this.id,
         this.nom,
         this.sexe,
@@ -25,12 +25,12 @@ class RDV {
         this.idRef,
     });
 
-    factory RDV.fromJson(Map<String, dynamic> json) => RDV(
+    factory RdvModel.fromJson(Map<String, dynamic> json) => RdvModel(
         id: json["id"],
         nom: json["nom"],
         sexe: json["sexe"],
         contact: json["contact"],
-        datetime: json["datetime"] == null ? null : DateTime.parse(json["datetime"]),
+        datetime: json["dateTime"] == null ? null : DateTime.parse(json["datetime"]),
         hopital: json["hopital"],
         service: json["service"],
     );
@@ -39,7 +39,7 @@ class RDV {
         "nom": nom,
         "sexe": sexe,
         "contact": sexe,
-        "datetime": datetime?.toIso8601String(),
+        "dateTime": datetime?.toIso8601String(),
         "hopital": hopital,
         "service": service,
         "reference_id": idRef,

@@ -100,16 +100,28 @@ class _LoginPageState extends State<LoginPage> {
 
 	String contactDetail = _contact.toString();
     String password = _pssw.toString();
+	SnackBar? info;
+	UtilisateurModel? user;
 	bool status = false;
 	if (checkPhoneNumber(contactDetail)) {
-		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, numeroTelephone: contactDetail);
+		try {
+			user = await UtilisateurApi().checkUser(password: password, numeroTelephone: contactDetail);
+		}
+		on Exception {
+			info = customSnackBar(background, "Problème de connexion");
+		}
 		if (user != null) {
 			utilisateur = user;
 			status = true;
 		}
 	}
 	else {
-		UtilisateurModel? user = await UtilisateurApi().checkUser(password: password, email: contactDetail);
+		try {
+			user = await UtilisateurApi().checkUser(password: password, email: contactDetail);
+		}
+		on Exception {
+			info = customSnackBar(background, "Problème de connexion");
+		}
 		if (user != null) {
 			utilisateur = user;
 			status = true;
@@ -119,6 +131,11 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isLoading = false;
     });
+
+	if (mounted && (info != null)) {
+		ScaffoldMessenger.of(context).showSnackBar(info);
+		return;
+	}
 
     if (mounted && status) {
       contact.text = "";
@@ -130,6 +147,10 @@ class _LoginPageState extends State<LoginPage> {
 		}),
 		);
     }
+	else if (mounted && !status) {
+		var snack = customSnackBar(background, "Utilisateur non existant");
+		ScaffoldMessenger.of(context).showSnackBar(snack);
+	}
   }
 
   @override

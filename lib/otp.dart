@@ -61,9 +61,7 @@ class _OtpPageState extends State<OtpPage> {
     });
 	bool status = verifyOtp(otp);
 	if (status) {
-		print("waiting...");
 		bool accountStatus = await UtilisateurApi().insertUser(user);
-		print(accountStatus);
 		setState(() {
 		  isLoading = false;
 		});

@@ -167,9 +167,6 @@ class _LoginPageState extends State<LoginPage> {
                   margin: EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
                       child: Column(children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height/10,
-                    ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset("assets/logo/medico_logo2.png",

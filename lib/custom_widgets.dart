@@ -53,6 +53,19 @@ String prettyPrint(DateTime? d) {
 	return "\nDate: ${d?.day}/${d?.month}/${d?.year}\nHeure: ${d?.hour}:${d?.minute}";
 }
 
+// Custom dynamic Snack Bar
+SnackBar customSnackBar(Color? backgroundColor, String message) {
+  	return SnackBar(
+		backgroundColor: getColor(backgroundColor),
+		content: Text(message, style: TextStyle(
+			color: Colors.red
+		)),
+		showCloseIcon: true,
+		closeIconColor: backgroundColor,
+		duration: Duration(seconds: 2),
+	);
+}
+
 // Custom DateTime picker
 Widget timePicker(BuildContext context, {required BoardDateTimeTextController controller,
 			 	  required Function(DateTime) onChanged, required Color? backgroundColor}) {
